@@ -41,104 +41,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            GreetingPreview()
-        }
-    }
-}
-
-@Composable
-fun Background(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.background_picture),
-        contentDescription = "background",
-        modifier = modifier,
-        contentScale = ContentScale.Crop
-    )
-}
-
-@Composable
-fun Title() {
-    Text(
-        text = stringResource(id = R.string.aspen),
-        modifier = Modifier.padding(top = 93.dp),
-        fontSize = 116.sp,
-        color = colorResource(id = R.color.white),
-        fontFamily = hiatusFamily,
-    )
-}
-
-
-@Composable
-fun BottomText(text: String, fontSize: TextUnit, fontWeight: FontWeight? = null) {
-    Text(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 32.dp),
-        text = text,
-        fontSize = fontSize,
-        fontWeight = fontWeight,
-        color = colorResource(id = R.color.white),
-        fontFamily = montserratFamily,
-    )
-}
-
-@Composable
-fun ExploreButton() {
-    Button(
-        onClick = {
-            //TODO Навигацию в следующий экран
-        },
-        modifier = Modifier
-            .padding(bottom = 48.dp, top = 32.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp),
-        colors = ButtonDefaults.buttonColors(travel),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.explore),
-            Modifier.padding(vertical = 8.dp),
-            fontFamily = circularFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
-        )
-    }
-}
-
-
-@Preview(device = "spec:width=411dp,height=891dp")
-@Composable
-fun GreetingPreview() {
-    Aspen_ComposeTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Background(Modifier)
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Title()
-                Spacer(modifier = Modifier.weight(1f))
-                BottomText(
-                    text = stringResource(id = R.string.plan_your),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Normal
-                )
-                BottomText(
-                    text = stringResource(id = R.string.luxurious),
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                BottomText(
-                    text = stringResource(id = R.string.vacation),
-                    fontSize = 40.sp,
-                    fontWeight = FontWeight.Medium
-                )
-                ExploreButton()
+            Aspen_ComposeTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainScreen()
+                }
             }
         }
-
     }
 }

@@ -1,7 +1,6 @@
-package com.aspen_compose
+package com.aspen_compose.ui.welcome_screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.aspen_compose.R
+import com.aspen_compose.Screen
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import com.aspen_compose.ui.theme.circularFamily
 import com.aspen_compose.ui.theme.hiatusFamily

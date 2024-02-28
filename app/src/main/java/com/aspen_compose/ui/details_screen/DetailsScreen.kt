@@ -1,4 +1,4 @@
-package com.aspen_compose
+package com.aspen_compose.ui.details_screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

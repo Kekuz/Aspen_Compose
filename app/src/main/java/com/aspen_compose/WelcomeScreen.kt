@@ -25,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import com.aspen_compose.ui.theme.circularFamily
 import com.aspen_compose.ui.theme.hiatusFamily
@@ -33,7 +35,9 @@ import com.aspen_compose.ui.theme.travel
 
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    navController: NavHostController
+) {
     Background(Modifier)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,7 +60,7 @@ fun WelcomeScreen() {
             fontSize = 40.sp,
             fontWeight = FontWeight.Medium
         )
-        ExploreButton()
+        ExploreButton(navController)
     }
 }
 
@@ -97,10 +101,14 @@ fun BottomText(text: String, fontSize: TextUnit, fontWeight: FontWeight? = null)
 }
 
 @Composable
-fun ExploreButton() {
+fun ExploreButton(navController: NavHostController) {
     Button(
         onClick = {
-            //TODO Навигацию в следующий экран
+            navController.navigate(route = Screen.Main.route){
+                popUpTo(Screen.Welcome.route){
+                    inclusive = true
+                }
+            }
         },
         modifier = Modifier
             .padding(bottom = 48.dp, top = 32.dp)
@@ -127,7 +135,9 @@ fun PreviewWelcomeScreen() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            WelcomeScreen()
+            WelcomeScreen(
+                navController = rememberNavController()
+            )
         }
 
     }

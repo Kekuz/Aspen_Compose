@@ -3,6 +3,7 @@ package com.aspen_compose
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import com.aspen_compose.ui.theme.backgroundBlue
 import com.aspen_compose.ui.theme.black
@@ -68,7 +71,7 @@ import com.aspen_compose.ui.theme.white
 import com.aspen_compose.ui.theme.yellow
 
 @Composable
-fun MainScreen() {
+fun MainScreen(navController: NavHostController) {
     LazyColumn {
         item { CurrentPlace() }
         item { SearchField() }
@@ -90,6 +93,7 @@ fun MainScreen() {
                         image = painterResource(id = R.drawable.popular_mockup3),
                         name = "Alley Palace",
                         rateCount = "4.1",
+                        navController,
                     )
                 }
                 item {
@@ -97,6 +101,7 @@ fun MainScreen() {
                         image = painterResource(id = R.drawable.popular_mockup2),
                         name = "Coeurdes Alpes",
                         rateCount = "4.5",
+                        navController,
                     )
                 }
                 item {
@@ -104,6 +109,7 @@ fun MainScreen() {
                         image = painterResource(id = R.drawable.popular_mockup1),
                         name = "Random place",
                         rateCount = "4.2",
+                        navController,
                     )
                 }
             }
@@ -231,8 +237,17 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
 }
 
 @Composable
-fun PopularCard(image: Painter, name: String, rateCount: String) {
-    ConstraintLayout {
+fun PopularCard(image: Painter, name: String, rateCount: String, navController: NavHostController) {
+    ConstraintLayout(
+        modifier = Modifier
+            .width(188.dp)
+            .height(240.dp)
+            .padding(start = 20.dp, end = 8.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .clickable {
+                navController.navigate(route = Screen.Details.route)
+            }
+    ) {
         val (city, rate, like, background) = createRefs()
 
         val ellipsisName =
@@ -241,15 +256,14 @@ fun PopularCard(image: Painter, name: String, rateCount: String) {
 
         Image(
             modifier = Modifier
-                .width(188.dp)
-                .height(240.dp)
                 .constrainAs(background) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start, margin = 20.dp)
-                    end.linkTo(parent.end, margin = 8.dp)
+                    start.linkTo(parent.start /*margin = 20.dp*/)
+                    end.linkTo(parent.end /*margin = 8.dp*/)
                 },
             painter = image,
+            contentScale = ContentScale.Crop,
             contentDescription = "Mockup picture"
         )
 
@@ -473,7 +487,7 @@ fun PreviewMainScreen() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            MainScreen()
+            MainScreen(navController = rememberNavController())
         }
 
     }

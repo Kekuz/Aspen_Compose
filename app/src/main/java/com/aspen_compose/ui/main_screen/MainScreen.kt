@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,6 +48,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -94,7 +96,11 @@ fun MainScreen(
             }
         }
         item {
-            LazyRow(Modifier.padding(top = 12.dp)) {
+            LazyRow(
+                Modifier.padding(top = 12.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(28.dp)
+            ) {
                 item {
                     PopularCard(
                         image = painterResource(id = R.drawable.popular_mockup3),
@@ -123,7 +129,11 @@ fun MainScreen(
         }
         item { Separator(text = "Recommended") }
         item {
-            LazyRow(Modifier.padding(top = 12.dp)) {
+            LazyRow(
+                Modifier.padding(top = 12.dp),
+                contentPadding = PaddingValues(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
                 item {
                     RecommendedCard(
                         painterResource(id = R.drawable.recommended_mockup2),
@@ -158,7 +168,6 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
     val brush = Brush.horizontalGradient(listOf(white, gradientGray))
     ConstraintLayout(
         modifier = Modifier
-            .padding(start = 20.dp, end = 4.dp)
             .width(174.dp)
             .height(142.dp)
             .border(1.dp, borderGray, RoundedCornerShape(16.dp))
@@ -179,6 +188,7 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
                 .width(166.dp)
                 .height(96.dp)
                 .constrainAs(_image) {
+                    height = Dimension.fillToConstraints
                     top.linkTo(parent.top, margin = 4.dp)
                     start.linkTo(parent.start, margin = 4.dp)
                     end.linkTo(parent.end, margin = 4.dp)
@@ -249,7 +259,7 @@ fun PopularCard(image: Painter, name: String, rateCount: String, navController: 
         modifier = Modifier
             .width(188.dp)
             .height(240.dp)
-            .padding(start = 20.dp, end = 8.dp)
+            //.padding(start = 20.dp, end = 8.dp)
             .clip(RoundedCornerShape(20.dp))
             .clickable {
                 navController.navigate(route = Screen.Details.route)
@@ -264,10 +274,12 @@ fun PopularCard(image: Painter, name: String, rateCount: String, navController: 
         Image(
             modifier = Modifier
                 .constrainAs(background) {
+                    height = Dimension.fillToConstraints
+                    width = Dimension.fillToConstraints
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start /*margin = 20.dp*/)
-                    end.linkTo(parent.end /*margin = 8.dp*/)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 },
             painter = image,
             contentScale = ContentScale.Crop,
@@ -360,7 +372,10 @@ fun Categories() {
     val buttons = listOf("Location", "Hotels", "Food", "Adventure")
     val selectedButton = remember { mutableStateOf(buttons.first()) }
 
-    LazyRow(Modifier.padding(start = 20.dp, top = 32.dp)) {
+    LazyRow(
+        Modifier.padding(top = 32.dp),
+        contentPadding = PaddingValues(horizontal = 20.dp),
+    ) {
         buttons.forEach {
             item {
                 RadioCategory(text = it, selectedButton = selectedButton)

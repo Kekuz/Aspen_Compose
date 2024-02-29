@@ -12,12 +12,11 @@ import androidx.navigation.compose.rememberNavController
 import com.aspen_compose.ui.details_screen.DetailsScreen
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    lateinit var navController: NavHostController
+    private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +28,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //SetupNavGraph(navController = navController)
-                    DetailsScreen(navController = navController)
+                    SetupNavGraph(navController = navController)
+                    //DetailsScreen(navController = navController)
                 }
             }
         }

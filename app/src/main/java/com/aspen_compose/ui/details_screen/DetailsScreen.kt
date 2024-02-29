@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,11 +53,16 @@ import com.aspen_compose.ui.theme.lightGray
 import com.aspen_compose.ui.theme.montserratFamily
 import com.aspen_compose.ui.theme.textGray
 import com.aspen_compose.ui.theme.travel
+import com.aspen_compose.ui.theme.white
 import com.aspen_compose.ui.theme.yellow
 
 @Composable
 fun DetailsScreen(navController: NavHostController) {
     ConstraintLayout {
+
+        val startGuideline = createGuidelineFromStart(20.dp)
+        val endGuideline = createGuidelineFromEnd(20.dp)
+
         val (_image,
             _backButton,
             _like,
@@ -81,8 +87,8 @@ fun DetailsScreen(navController: NavHostController) {
                 .constrainAs(_image) {
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
-                    start.linkTo(parent.start, margin = 20.dp)
-                    end.linkTo(parent.end, margin = 20.dp)
+                    start.linkTo(startGuideline)
+                    end.linkTo(endGuideline)
                     top.linkTo(parent.top, margin = 20.dp)
                     bottom.linkTo(_name.top, margin = 32.dp)
                 }
@@ -124,15 +130,28 @@ fun DetailsScreen(navController: NavHostController) {
             fontWeight = FontWeight.SemiBold,
             color = darkGray,
             modifier = Modifier.constrainAs(_name) {
-                start.linkTo(parent.start, margin = 20.dp)
+                start.linkTo(startGuideline)
                 bottom.linkTo(_reviews.top, margin = 6.dp)
+            }
+        )
+
+        Text(
+            text = "Show map",
+            fontFamily = circularFamily,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            color = travel,
+            modifier = Modifier.constrainAs(_showMap) {
+                top.linkTo(_name.top)
+                bottom.linkTo(_name.bottom)
+                end.linkTo(endGuideline)
             }
         )
 
         Row(
             Modifier
                 .constrainAs(_reviews) {
-                    start.linkTo(parent.start, margin = 23.dp)
+                    start.linkTo(startGuideline, margin = 3.dp)
                     bottom.linkTo(_discription.top, margin = 16.dp)
                 },
             verticalAlignment = Alignment.CenterVertically
@@ -160,11 +179,10 @@ fun DetailsScreen(navController: NavHostController) {
             fontWeight = FontWeight.Medium,
             color = detailsDescription,
             modifier = Modifier
-                .padding(horizontal = 20.dp)
                 .constrainAs(_discription) {
-                    //height = Dimension.fillToConstraints
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                    start.linkTo(startGuideline)
+                    end.linkTo(endGuideline)
                     bottom.linkTo(_readMore.top, margin = 9.dp)
                 },
         )
@@ -172,7 +190,7 @@ fun DetailsScreen(navController: NavHostController) {
         Row(
             modifier = Modifier
                 .constrainAs(_readMore) {
-                    start.linkTo(parent.start, margin = 20.dp)
+                    start.linkTo(startGuideline)
                     bottom.linkTo(_facilitiesLabel.top, margin = 32.dp)
                 },
             verticalAlignment = Alignment.CenterVertically
@@ -198,7 +216,7 @@ fun DetailsScreen(navController: NavHostController) {
             fontWeight = FontWeight.SemiBold,
             color = darkGray,
             modifier = Modifier.constrainAs(_facilitiesLabel) {
-                start.linkTo(parent.start, margin = 20.dp)
+                start.linkTo(startGuideline)
                 bottom.linkTo(_facilities.top, margin = 16.dp)
             }
         )
@@ -238,11 +256,25 @@ fun DetailsScreen(navController: NavHostController) {
                 .constrainAs(_bookButton) {
                     width = Dimension.fillToConstraints
                     bottom.linkTo(parent.bottom, margin = 24.dp)
-                    end.linkTo(parent.end, margin = 20.dp)
+                    end.linkTo(endGuideline)
                     start.linkTo(_price.end, margin = 56.dp)
                 }
         ) {
-            Text(text = "Book Now")
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Book Now",
+                    fontFamily = circularFamily,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = white,
+                    modifier = Modifier.padding(end = 10.dp)
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_arrow_right),
+                    contentDescription = "Arrow right"
+                )
+            }
+
         }
 
         Text(
@@ -252,7 +284,7 @@ fun DetailsScreen(navController: NavHostController) {
             fontFamily = circularFamily,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.constrainAs(_priceLabel) {
-                start.linkTo(parent.start, margin = 20.dp)
+                start.linkTo(startGuideline)
                 bottom.linkTo(_price.top, margin = 4.dp)
             }
         )
@@ -264,7 +296,7 @@ fun DetailsScreen(navController: NavHostController) {
             fontFamily = montserratFamily,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.constrainAs(_price) {
-                start.linkTo(parent.start, margin = 20.dp)
+                start.linkTo(startGuideline)
                 bottom.linkTo(parent.bottom, margin = 28.dp)
             }
         )

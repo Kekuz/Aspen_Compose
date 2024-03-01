@@ -18,6 +18,11 @@ object Mockup {
                     "1 Heater",
                     "Dinner",
                     "2 Tub",
+                ),
+                listOf(
+                    R.drawable.ic_wifi,
+                    R.drawable.ic_food,
+                    R.drawable.ic_bath_tub,
                 )
             ),
             Hostel(
@@ -33,6 +38,12 @@ object Mockup {
                     "Dinner",
                     "1 Tub",
                     "Pool"
+                ),
+                listOf(
+                    R.drawable.ic_wifi,
+                    R.drawable.ic_food,
+                    R.drawable.ic_bath_tub,
+                    R.drawable.ic_frame
                 )
             ),
             Hostel(
@@ -48,6 +59,12 @@ object Mockup {
                     "Dinner",
                     "1 Tub",
                     "Pool"
+                ),
+                listOf(
+                    R.drawable.ic_wifi,
+                    R.drawable.ic_food,
+                    R.drawable.ic_bath_tub,
+                    R.drawable.ic_frame
                 )
             )
 

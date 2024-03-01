@@ -34,13 +34,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintLayoutBaseScope
-import androidx.constraintlayout.compose.ConstraintLayoutScope
 import androidx.constraintlayout.compose.Dimension
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.aspen_compose.R
 import com.aspen_compose.mockup.Mockup
 import com.aspen_compose.model.Hostel
@@ -76,19 +71,19 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
         val startGuideline = createGuidelineFromStart(20.dp)
         val endGuideline = createGuidelineFromEnd(20.dp)
 
-        val (_image,
-            _backButton,
-            _like,
-            _name,
-            _showMap,
-            _reviews,
-            _readMore,
-            _discription,
-            _facilitiesLabel,
-            _facilities,
-            _priceLabel,
-            _price,
-            _bookButton) = createRefs()
+        val (image,
+            backButton,
+            like,
+            name,
+            showMap,
+            reviews,
+            readMore,
+            description,
+            facilitiesLabel,
+            facilities,
+            priceLabel,
+            price,
+            bookButton) = createRefs()
 
         Image(
             painter = painterResource(id = hostel.image),
@@ -96,13 +91,13 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .clip(shape = RoundedCornerShape(20.dp))
-                .constrainAs(_image) {
+                .constrainAs(image) {
                     width = Dimension.fillToConstraints
                     height = Dimension.fillToConstraints
                     start.linkTo(startGuideline)
                     end.linkTo(endGuideline)
                     top.linkTo(parent.top, margin = 20.dp)
-                    bottom.linkTo(_name.top, margin = 32.dp)
+                    bottom.linkTo(name.top, margin = 32.dp)
                 }
         )
 
@@ -116,7 +111,7 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
                 .clip(shape = RoundedCornerShape(8.dp))
                 .background(backgroundBlue)
                 .padding(horizontal = 17.dp, vertical = 15.dp)
-                .constrainAs(_backButton) {
+                .constrainAs(backButton) {
                     start.linkTo(parent.start, margin = 32.dp)
                     top.linkTo(parent.top, margin = 32.dp)
                 }
@@ -127,24 +122,27 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             contentDescription = "Icon heart",
             modifier = Modifier
                 .size(width = 44.dp, height = 44.dp)
-                .constrainAs(_like) {
+                .constrainAs(like) {
                     end.linkTo(parent.end, 34.dp)
-                    bottom.linkTo(_image.bottom)
-                    top.linkTo(_image.bottom)
+                    bottom.linkTo(image.bottom)
+                    top.linkTo(image.bottom)
                 }
                 .shadow(elevation = 5.dp, shape = CircleShape)
         )
 
-        //TODO сделать элипсайз
+        val ellipsisName =
+            if (hostel.name.length > 20) hostel.name.slice(0..20) + "..."
+            else hostel.name
+
         Text(
-            text = hostel.name,
+            text = ellipsisName,
             fontFamily = montserratFamily,
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
             color = darkGray,
-            modifier = Modifier.constrainAs(_name) {
+            modifier = Modifier.constrainAs(name) {
                 start.linkTo(startGuideline)
-                bottom.linkTo(_reviews.top, margin = 6.dp)
+                bottom.linkTo(reviews.top, margin = 6.dp)
             }
         )
 
@@ -154,18 +152,18 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold,
             color = travel,
-            modifier = Modifier.constrainAs(_showMap) {
-                top.linkTo(_name.top)
-                bottom.linkTo(_name.bottom)
+            modifier = Modifier.constrainAs(showMap) {
+                top.linkTo(name.top)
+                bottom.linkTo(name.bottom)
                 end.linkTo(endGuideline)
             }
         )
 
         Row(
             Modifier
-                .constrainAs(_reviews) {
+                .constrainAs(reviews) {
                     start.linkTo(startGuideline, margin = 3.dp)
-                    bottom.linkTo(_discription.top, margin = 16.dp)
+                    bottom.linkTo(description.top, margin = 16.dp)
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -192,19 +190,19 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             fontWeight = FontWeight.Medium,
             color = detailsDescription,
             modifier = Modifier
-                .constrainAs(_discription) {
+                .constrainAs(description) {
                     width = Dimension.fillToConstraints
                     start.linkTo(startGuideline)
                     end.linkTo(endGuideline)
-                    bottom.linkTo(_readMore.top, margin = 9.dp)
+                    bottom.linkTo(readMore.top, margin = 9.dp)
                 },
         )
 
         Row(
             modifier = Modifier
-                .constrainAs(_readMore) {
+                .constrainAs(readMore) {
                     start.linkTo(startGuideline)
-                    bottom.linkTo(_facilitiesLabel.top, margin = 32.dp)
+                    bottom.linkTo(facilitiesLabel.top, margin = 32.dp)
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -228,24 +226,24 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
             color = darkGray,
-            modifier = Modifier.constrainAs(_facilitiesLabel) {
+            modifier = Modifier.constrainAs(facilitiesLabel) {
                 start.linkTo(startGuideline)
-                bottom.linkTo(_facilities.top, margin = 16.dp)
+                bottom.linkTo(facilities.top, margin = 16.dp)
             }
         )
 
         LazyRow(
             Modifier
-                .constrainAs(_facilities) {
-                    bottom.linkTo(_bookButton.top, margin = 29.dp)
+                .constrainAs(facilities) {
+                    bottom.linkTo(bookButton.top, margin = 29.dp)
                 },
             contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            hostel.facilities.forEach { facility ->
+            hostel.facilities.forEachIndexed { index, facility ->
                 item {
                     FacilitiesItem(
-                        icon = choseIcon(facility = facility),
+                        icon = painterResource(id = hostel.facilitiesIcons[index]),
                         text = facility
                     )
                 }
@@ -260,11 +258,11 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .height(56.dp)
-                .constrainAs(_bookButton) {
+                .constrainAs(bookButton) {
                     width = Dimension.fillToConstraints
                     bottom.linkTo(parent.bottom, margin = 24.dp)
                     end.linkTo(endGuideline)
-                    start.linkTo(_price.end, margin = 56.dp)
+                    start.linkTo(price.end, margin = 56.dp)
                 }
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -290,9 +288,9 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             fontSize = 12.sp,
             fontFamily = circularFamily,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.constrainAs(_priceLabel) {
+            modifier = Modifier.constrainAs(priceLabel) {
                 start.linkTo(startGuideline)
-                bottom.linkTo(_price.top, margin = 4.dp)
+                bottom.linkTo(price.top, margin = 4.dp)
             }
         )
 
@@ -302,7 +300,7 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             fontSize = 24.sp,
             fontFamily = montserratFamily,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.constrainAs(_price) {
+            modifier = Modifier.constrainAs(price) {
                 start.linkTo(startGuideline)
                 bottom.linkTo(parent.bottom, margin = 28.dp)
             }
@@ -334,19 +332,6 @@ fun FacilitiesItem(icon: Painter, text: String) {
         )
     }
 }
-
-//TODO Передавать иконку внутри класса
-@Composable
-private fun choseIcon(facility: String): Painter =
-    painterResource(
-        id = when (facility) {
-            "1 Heater" -> R.drawable.ic_food
-            "Dinner" -> R.drawable.ic_food
-            "1 Tub" -> R.drawable.ic_bath_tub
-            "Pool" -> R.drawable.ic_frame
-            else -> R.drawable.ic_wifi
-        }
-    )
 
 
 @Preview(device = "spec:width=411dp,height=891dp")

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -49,12 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.aspen_compose.Destinations
 import com.aspen_compose.R
-import com.aspen_compose.Screen
 import com.aspen_compose.mockup.Mockup
 import com.aspen_compose.model.Hostel
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
@@ -251,7 +247,8 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
 
 @Composable
 fun PopularCard(hostel: Hostel, navigateToDetails: (Int) -> Unit) {
-    ConstraintLayout(
+
+    /*ConstraintLayout(
         modifier = Modifier
             .width(188.dp)
             .height(240.dp)
@@ -333,7 +330,96 @@ fun PopularCard(hostel: Hostel, navigateToDetails: (Int) -> Unit) {
             painter = painterResource(id = R.drawable.ic_heart),
             contentDescription = "heart button"
         )
+    }*/
+    Box(
+        modifier = Modifier
+            .width(188.dp)
+            .height(240.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .clickable { navigateToDetails(hostel.id) },
+        contentAlignment = Alignment.BottomStart,
+    ) {
+        Image(
+            painter = painterResource(id = hostel.image),
+            contentScale = ContentScale.Crop,
+            contentDescription = "Hostel picture"
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Column(
+                modifier = Modifier.padding(start = 12.dp, bottom = 12.dp),
+                Arrangement.SpaceBetween
+            ) {
+                NameCard(name = hostel.name)
+                Spacer(modifier = Modifier.padding(bottom = 6.dp))
+                RateCard(rate = hostel.rate)
+            }
+            LikeButton(modifier = Modifier.padding(end = 16.dp, bottom = 16.dp))
+
+        }
     }
+
+}
+
+@Composable
+fun NameCard(name: String) {
+    val ellipsisName =
+        if (name.length > 13) name.slice(0..13) + "..."
+        else name
+
+    Text(
+        text = ellipsisName, textAlign = TextAlign.Center,
+        fontSize = 12.sp,
+        maxLines = 1,
+        fontWeight = FontWeight.Medium,
+        color = white,
+        fontFamily = montserratFamily,
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(59.dp))
+            .background(gray)
+            .padding(horizontal = 12.dp, vertical = 4.dp)
+    )
+}
+
+@Composable
+fun RateCard(rate: String) {
+    Row(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(59.dp))
+            .background(gray)
+            .height(27.dp)
+            .width(58.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_star),
+            contentDescription = "rate star",
+            tint = yellow
+        )
+        Text(
+            modifier = Modifier.padding(start = 4.dp),
+            text = rate,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Medium,
+            color = white,
+            fontFamily = montserratFamily,
+        )
+    }
+}
+
+@Composable
+fun LikeButton(modifier: Modifier) {
+    Image(
+        alignment = Alignment.BottomEnd,
+        painter = painterResource(id = R.drawable.ic_heart),
+        contentDescription = "heart button",
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -451,7 +537,6 @@ fun SearchField() {
         },
         colors = TextFieldDefaults.textFieldColors(
             containerColor = backgroundBlue,
-            //focusedIndicatorColor = backgroundGray,
             cursorColor = black,
             unfocusedIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,

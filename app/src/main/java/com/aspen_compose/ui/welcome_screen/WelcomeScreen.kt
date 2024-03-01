@@ -37,7 +37,7 @@ import com.aspen_compose.ui.theme.travel
 
 @Composable
 fun WelcomeScreen(
-    navController: NavHostController
+    navigateToMain: () -> Unit = {},
 ) {
     Background(Modifier)
     Column(
@@ -61,7 +61,7 @@ fun WelcomeScreen(
             fontSize = 40.sp,
             fontWeight = FontWeight.Medium
         )
-        ExploreButton(navController)
+        ExploreButton(navigateToMain)
     }
 }
 
@@ -102,14 +102,10 @@ fun BottomText(text: String, fontSize: TextUnit, fontWeight: FontWeight? = null)
 }
 
 @Composable
-fun ExploreButton(navController: NavHostController) {
+fun ExploreButton(navigateToMain: () -> Unit) {
     Button(
         onClick = {
-            navController.navigate(route = Screen.Main.route){
-                popUpTo(Screen.Welcome.route){
-                    inclusive = true
-                }
-            }
+            navigateToMain()
         },
         modifier = Modifier
             .padding(bottom = 48.dp, top = 32.dp)
@@ -136,9 +132,7 @@ fun PreviewWelcomeScreen() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            WelcomeScreen(
-                navController = rememberNavController()
-            )
+            WelcomeScreen()
         }
 
     }

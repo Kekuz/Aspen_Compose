@@ -1,35 +1,63 @@
 package com.aspen_compose
 
+import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.aspen_compose.model.Hostel
 import com.aspen_compose.ui.details_screen.DetailsScreen
+import com.aspen_compose.ui.details_screen.DetailsViewModel
 import com.aspen_compose.ui.main_screen.MainScreen
+import com.aspen_compose.ui.main_screen.MainViewModel
 import com.aspen_compose.ui.welcome_screen.WelcomeScreen
 
 @Composable
 fun SetupNavGraph(
     navController: NavHostController,
-){
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.Welcome.route
-    ){
+    ) {
         composable(
             route = Screen.Welcome.route
-        ){
-            WelcomeScreen(navController = navController)
+        ) {
+            WelcomeScreen(navigateToMain = {
+                navController.navigate(route = Screen.Main.route) {
+                    popUpTo(Screen.Welcome.route) {
+                        inclusive = true
+                    }
+                }
+            })
         }
         composable(
             route = Screen.Main.route
-        ){
-            MainScreen(navController = navController)
+        ) {
+            val viewModel = hiltViewModel<MainViewModel>()
+            MainScreen(viewModel = viewModel, navigateToDetails = { id ->
+                navController.navigate(
+                    route = Destinations.Details(id).route
+                )
+            })
         }
         composable(
-            route = Screen.Details.route
-        ){
-            DetailsScreen(navController = navController)
+            route = Screen.Details("hostel").route,
+            arguments = listOf(
+                navArgument("hostel") {
+                    type = NavType.IntType
+                }
+            )
+        ) {
+            //val viewModel = hiltViewModel<DetailsViewModel>()
+            val hostel = it.arguments?.getInt("hostel")!!
+            DetailsScreen(/*viewModel = viewModel*/hostel, navigateBack = {
+                navController.popBackStack()
+            })
         }
     }
 }

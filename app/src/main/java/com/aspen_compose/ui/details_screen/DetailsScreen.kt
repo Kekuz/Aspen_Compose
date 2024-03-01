@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,23 +21,29 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintLayoutBaseScope
+import androidx.constraintlayout.compose.ConstraintLayoutScope
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.aspen_compose.R
+import com.aspen_compose.mockup.Mockup
+import com.aspen_compose.model.Hostel
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import com.aspen_compose.ui.theme.backgroundBlue
 import com.aspen_compose.ui.theme.backgroundFacilities
@@ -47,17 +51,30 @@ import com.aspen_compose.ui.theme.circularFamily
 import com.aspen_compose.ui.theme.darkGray
 import com.aspen_compose.ui.theme.detailsDescription
 import com.aspen_compose.ui.theme.detailsYellow
-import com.aspen_compose.ui.theme.gray
 import com.aspen_compose.ui.theme.green
 import com.aspen_compose.ui.theme.lightGray
 import com.aspen_compose.ui.theme.montserratFamily
 import com.aspen_compose.ui.theme.textGray
 import com.aspen_compose.ui.theme.travel
 import com.aspen_compose.ui.theme.white
-import com.aspen_compose.ui.theme.yellow
 
 @Composable
-fun DetailsScreen(navController: NavHostController) {
+fun DetailsScreen(
+    //viewModel: DetailsViewModel,
+    id: Int,
+    navigateBack: () -> Unit,
+) {
+    //val hostel by viewModel.hotelState.collectAsState()
+
+    DetailsBody(hostelId = id, navigateBack = navigateBack)
+
+}
+
+@Composable
+fun DetailsBody(hostelId: Int, navigateBack: () -> Unit = {}) {
+    //TODO Это всунуть во viewModel
+    val hostel = Mockup.getHostelById(hostelId)
+
     ConstraintLayout {
 
         val startGuideline = createGuidelineFromStart(20.dp)
@@ -77,9 +94,8 @@ fun DetailsScreen(navController: NavHostController) {
             _price,
             _bookButton) = createRefs()
 
-
         Image(
-            painter = painterResource(id = R.drawable.popular_mockup2),
+            painter = painterResource(id = hostel.image),
             contentDescription = "Place image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -99,7 +115,7 @@ fun DetailsScreen(navController: NavHostController) {
             contentDescription = "Back button",
             modifier = Modifier
                 .clickable {
-                    navController.popBackStack()
+                    navigateBack()
                 }
                 .clip(shape = RoundedCornerShape(8.dp))
                 .background(backgroundBlue)
@@ -123,8 +139,9 @@ fun DetailsScreen(navController: NavHostController) {
                 .shadow(elevation = 5.dp, shape = CircleShape)
         )
 
+        //TODO сделать элипсайз
         Text(
-            text = "Coeurdes Alpes",
+            text = hostel.name,
             fontFamily = montserratFamily,
             fontSize = 24.sp,
             fontWeight = FontWeight.SemiBold,
@@ -163,7 +180,7 @@ fun DetailsScreen(navController: NavHostController) {
             )
 
             Text(
-                text = "4.5 (355 Reviews)",
+                text = "${hostel.rate} (${hostel.reviews} Reviews)",
                 fontFamily = circularFamily,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Normal,
@@ -173,7 +190,7 @@ fun DetailsScreen(navController: NavHostController) {
         }
 
         Text(
-            text = "Aspen is as close as one can get to a storybook alpine town in America. The choose-your-own-adventure possibilities—skiing, hiking, dining shopping and ....",
+            text = hostel.description,
             fontFamily = circularFamily,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
@@ -229,24 +246,18 @@ fun DetailsScreen(navController: NavHostController) {
             contentPadding = PaddingValues(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            val items = listOf(
-                Pair(R.drawable.ic_wifi, "1 Heater"),
-                Pair(R.drawable.ic_food, "Dinner"),
-                Pair(R.drawable.ic_bath_tub, "1 Tub"),
-                Pair(R.drawable.ic_frame, "Pool"),
-            )
-            items.forEachIndexed { index, item ->
+            hostel.facilities.forEach { facility ->
                 item {
                     FacilitiesItem(
-                        icon = painterResource(id = item.first),
-                        text = item.second
+                        icon = choseIcon(facility = facility),
+                        text = facility
                     )
                 }
             }
         }
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {},
             colors = ButtonDefaults.buttonColors(
                 containerColor = travel
             ),
@@ -290,7 +301,7 @@ fun DetailsScreen(navController: NavHostController) {
         )
 
         Text(
-            text = "$199",
+            text = hostel.price,
             color = green,
             fontSize = 24.sp,
             fontFamily = montserratFamily,
@@ -328,6 +339,20 @@ fun FacilitiesItem(icon: Painter, text: String) {
     }
 }
 
+//TODO Передавать иконку внутри класса
+@Composable
+private fun choseIcon(facility: String): Painter =
+    painterResource(
+        id = when (facility) {
+            "1 Heater" -> R.drawable.ic_food
+            "Dinner" -> R.drawable.ic_food
+            "1 Tub" -> R.drawable.ic_bath_tub
+            "Pool" -> R.drawable.ic_frame
+            else -> R.drawable.ic_wifi
+        }
+    )
+
+
 @Preview(device = "spec:width=411dp,height=891dp")
 @Composable
 fun PreviewDetailsScreen() {
@@ -336,7 +361,7 @@ fun PreviewDetailsScreen() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            DetailsScreen(navController = rememberNavController())
+            DetailsBody(0)
         }
 
     }

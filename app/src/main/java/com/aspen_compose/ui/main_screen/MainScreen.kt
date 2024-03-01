@@ -500,7 +500,7 @@ fun CurrentPlace() {
             TitleText(text = "Explore", fontSize = 14.sp, fontWeight = FontWeight.Normal)
             TitleText(text = "Aspen", fontSize = 32.sp, fontWeight = FontWeight.Medium)
         }
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
                 modifier = Modifier.padding(end = 8.dp),
                 painter = painterResource(id = R.drawable.ic_location),

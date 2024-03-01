@@ -105,10 +105,10 @@ fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
             painter = painterResource(id = R.drawable.ic_arrow_left),
             contentDescription = "Back button",
             modifier = Modifier
+                .clip(shape = RoundedCornerShape(8.dp))
                 .clickable {
                     navigateBack()
                 }
-                .clip(shape = RoundedCornerShape(8.dp))
                 .background(backgroundBlue)
                 .padding(horizontal = 17.dp, vertical = 15.dp)
                 .constrainAs(backButton) {

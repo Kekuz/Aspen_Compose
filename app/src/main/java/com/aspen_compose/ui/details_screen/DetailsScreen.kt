@@ -60,21 +60,17 @@ import com.aspen_compose.ui.theme.white
 
 @Composable
 fun DetailsScreen(
-    //viewModel: DetailsViewModel,
-    id: Int,
+    viewModel: DetailsViewModel,
     navigateBack: () -> Unit,
 ) {
-    //val hostel by viewModel.hotelState.collectAsState()
+    val hostel by viewModel.hotelState.collectAsState()
 
-    DetailsBody(hostelId = id, navigateBack = navigateBack)
+    DetailsBody(hostel = hostel, navigateBack = navigateBack)
 
 }
 
 @Composable
-fun DetailsBody(hostelId: Int, navigateBack: () -> Unit = {}) {
-    //TODO Это всунуть во viewModel
-    val hostel = Mockup.getHostelById(hostelId)
-
+fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
     ConstraintLayout {
 
         val startGuideline = createGuidelineFromStart(20.dp)
@@ -361,7 +357,7 @@ fun PreviewDetailsScreen() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            DetailsBody(0)
+            DetailsBody(hostel = Mockup.getHostelById(0))
         }
 
     }

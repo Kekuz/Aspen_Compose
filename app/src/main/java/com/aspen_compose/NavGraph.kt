@@ -1,15 +1,12 @@
 package com.aspen_compose
 
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.aspen_compose.model.Hostel
 import com.aspen_compose.ui.details_screen.DetailsScreen
 import com.aspen_compose.ui.details_screen.DetailsViewModel
 import com.aspen_compose.ui.main_screen.MainScreen
@@ -53,9 +50,10 @@ fun SetupNavGraph(
                 }
             )
         ) {
-            //val viewModel = hiltViewModel<DetailsViewModel>()
-            val hostel = it.arguments?.getInt("hostel")!!
-            DetailsScreen(/*viewModel = viewModel*/hostel, navigateBack = {
+
+            val viewModel = hiltViewModel<DetailsViewModel>()
+
+            DetailsScreen(viewModel = viewModel, navigateBack = {
                 navController.popBackStack()
             })
         }

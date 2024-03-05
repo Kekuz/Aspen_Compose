@@ -19,6 +19,7 @@ val white = Color(0xFFFFFFFF)
 val backgroundBlue = Color(0xFFF3F8FE)
 val backgroundFacilities = Color(0xFFEEF2FB)
 val gray = Color(0xFF4D5652)
+val backgroundDarkBlue = Color(0xFFD6E9FF)
 
 val yellow = Color(0xFFF8D675)
 val gradientGray = Color(0xFFF5F5F5)

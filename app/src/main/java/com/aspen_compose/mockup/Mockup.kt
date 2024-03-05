@@ -4,6 +4,21 @@ import com.aspen_compose.R
 import com.aspen_compose.model.Hostel
 
 object Mockup {
+
+    fun cities(): List<String>{
+        return listOf(
+            "Utah",
+            "Washington",
+            "Idaho",
+            "Nebraska",
+            "Minnesota",
+            "New Hampshire",
+            "Iowa",
+            "Wisconsin",
+            "Vermont",
+            "Florida"
+        )
+    }
     fun hostels(): List<Hostel> {
         return listOf(
             Hostel(

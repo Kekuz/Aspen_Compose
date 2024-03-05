@@ -21,14 +21,17 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     //UI state
-    private val _uiState = MutableStateFlow(MainUiState())
-    val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
+    //private val _uiState = MutableStateFlow(MainUiState.)
+    //val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
     private val _hotelsState = MutableStateFlow(Mockup.hostels())
     val hotelsState: StateFlow<List<Hostel>> = _hotelsState
 
+    private val _cities = MutableStateFlow(emptyList<String>())
+    val cities: StateFlow<List<String>> = _cities
+
     init {
-        //search()
+        search()
     }
 
     private fun search() {
@@ -40,10 +43,9 @@ class MainViewModel @Inject constructor(
                 if (response != null) {
                     Log.e("Response", response.toString())
                     if (response.states.isNotEmpty()) {
+                        _cities.value = response.states.map { state -> state.name }
                         //stateLiveData.postValue(SearchState.Content(response.results))
                         //Log.d("Page", currentPage.toString())
-                        //currentPage++
-                        //databaseInteractor.saveCharacters(response.results)
                     }
                 } else if (errorMessage != null) {
                     Log.e("Response", "Error")

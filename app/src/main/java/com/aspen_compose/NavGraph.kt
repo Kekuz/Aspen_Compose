@@ -7,6 +7,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.aspen_compose.Destinations
+import com.aspen_compose.Screen
 import com.aspen_compose.ui.details_screen.DetailsScreen
 import com.aspen_compose.ui.details_screen.DetailsViewModel
 import com.aspen_compose.ui.main_screen.MainScreen

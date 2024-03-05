@@ -1,5 +1,8 @@
 package com.aspen_compose.ui.main_screen
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -33,6 +37,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,6 +61,7 @@ import com.aspen_compose.mockup.Mockup
 import com.aspen_compose.model.Hostel
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import com.aspen_compose.ui.theme.backgroundBlue
+import com.aspen_compose.ui.theme.backgroundDarkBlue
 import com.aspen_compose.ui.theme.black
 import com.aspen_compose.ui.theme.borderGray
 import com.aspen_compose.ui.theme.circularFamily
@@ -75,11 +82,14 @@ fun MainScreen(
     viewModel: MainViewModel,
     navigateToDetails: (Int) -> Unit,
 ) {
-    val mainUiState by viewModel.uiState.collectAsState()
+    val cities by viewModel.cities.collectAsState()
     val hostels by viewModel.hotelsState.collectAsState()
+
+
 
     MainBody(
         hostels,
+        cities,
         navigateToDetails,
     )
 }
@@ -87,10 +97,11 @@ fun MainScreen(
 @Composable
 fun MainBody(
     hostels: List<Hostel>,
+    cities: List<String>,
     navigateToDetails: (Int) -> Unit = {},
 ) {
     LazyColumn {
-        item { CurrentPlace() }
+        item { CurrentPlace(cities) }
         item { SearchField() }
         item { Categories() }
         item {
@@ -164,16 +175,14 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
             .height(142.dp)
             .border(1.dp, borderGray, RoundedCornerShape(16.dp))
             .shadow(
-                elevation = 5.dp,
-                shape = RoundedCornerShape(16.dp)
+                elevation = 5.dp, shape = RoundedCornerShape(16.dp)
             )
             .clip(shape = RoundedCornerShape(16.dp))
             .background(brush = brush)
     ) {
         val (_image, _name, _interval, _icon, _iconText) = createRefs()
 
-        Image(
-            painter = image,
+        Image(painter = image,
             contentDescription = "place image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -185,11 +194,9 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
                     start.linkTo(parent.start, margin = 4.dp)
                     end.linkTo(parent.end, margin = 4.dp)
                 }
-                .clip(shape = RoundedCornerShape(12.dp))
-        )
+                .clip(shape = RoundedCornerShape(12.dp)))
 
-        Text(
-            text = interval,
+        Text(text = interval,
             fontSize = 10.sp,
             fontWeight = FontWeight.SemiBold,
             color = white,
@@ -202,11 +209,9 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
                 .constrainAs(_interval) {
                     top.linkTo(_image.top, margin = 81.dp)
                     end.linkTo(_image.end, margin = 10.dp)
-                }
-        )
+                })
 
-        Text(
-            text = name,
+        Text(text = name,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
             color = darkGray,
@@ -214,22 +219,18 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
             modifier = Modifier.constrainAs(_name) {
                 top.linkTo(_interval.bottom)
                 start.linkTo(parent.start, margin = 4.dp)
-            }
-        )
+            })
 
         if (isHot) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_trending_up),
+            Icon(painter = painterResource(id = R.drawable.ic_trending_up),
                 contentDescription = "Hot deal",
                 tint = hotDealIconColor,
                 modifier = Modifier.constrainAs(_icon) {
                     start.linkTo(parent.start, margin = 6.dp)
                     top.linkTo(_name.bottom)
-                }
-            )
+                })
 
-            Text(
-                text = "Hot Deal",
+            Text(text = "Hot Deal",
                 fontSize = 10.sp,
                 fontWeight = FontWeight.Normal,
                 color = darkGray,
@@ -238,8 +239,7 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
                 modifier = Modifier.constrainAs(_iconText) {
                     top.linkTo(_name.bottom)
                     start.linkTo(_icon.end, margin = 4.dp)
-                }
-            )
+                })
         }
 
     }
@@ -247,90 +247,6 @@ fun RecommendedCard(image: Painter, name: String, interval: String, isHot: Boole
 
 @Composable
 fun PopularCard(hostel: Hostel, navigateToDetails: (Int) -> Unit) {
-
-    /*ConstraintLayout(
-        modifier = Modifier
-            .width(188.dp)
-            .height(240.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .clickable { navigateToDetails(hostel.id) }
-    ) {
-        val (city, rate, like, background) = createRefs()
-
-        val ellipsisName =
-            if (hostel.name.length > 15) hostel.name.slice(0..15) + "..."
-            else hostel.name
-
-        Image(
-            modifier = Modifier
-                .constrainAs(background) {
-                    height = Dimension.fillToConstraints
-                    width = Dimension.fillToConstraints
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-            painter = painterResource(id = hostel.image),
-            contentScale = ContentScale.Crop,
-            contentDescription = "Hostel picture"
-        )
-
-        Text(
-            text = ellipsisName, textAlign = TextAlign.Center,
-            fontSize = 12.sp,
-            maxLines = 1,
-            fontWeight = FontWeight.Medium,
-            color = white,
-            fontFamily = montserratFamily,
-            modifier = Modifier
-                .clip(shape = RoundedCornerShape(59.dp))
-                .background(gray)
-                .padding(horizontal = 12.dp, vertical = 4.dp)
-                .constrainAs(city) {
-                    bottom.linkTo(rate.top, margin = 6.dp)
-                    start.linkTo(background.start, margin = 12.dp)
-                }
-        )
-
-        Row(
-            modifier = Modifier
-                .clip(shape = RoundedCornerShape(59.dp))
-                .background(gray)
-                .height(27.dp)
-                .width(58.dp)
-                .constrainAs(rate) {
-                    bottom.linkTo(background.bottom, margin = 12.dp)
-                    start.linkTo(background.start, margin = 12.dp)
-                },
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_star),
-                contentDescription = "rate star",
-                tint = yellow
-            )
-            Text(
-                modifier = Modifier.padding(start = 4.dp),
-                text = hostel.rate,
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Medium,
-                color = white,
-                fontFamily = montserratFamily,
-            )
-        }
-
-        Image(
-            modifier = Modifier.constrainAs(like) {
-                bottom.linkTo(background.bottom, margin = 16.dp)
-                end.linkTo(background.end, margin = 16.dp)
-            },
-            alignment = Alignment.BottomEnd,
-            painter = painterResource(id = R.drawable.ic_heart),
-            contentDescription = "heart button"
-        )
-    }*/
     Box(
         modifier = Modifier
             .width(188.dp)
@@ -351,8 +267,7 @@ fun PopularCard(hostel: Hostel, navigateToDetails: (Int) -> Unit) {
             verticalAlignment = Alignment.Bottom
         ) {
             Column(
-                modifier = Modifier.padding(start = 12.dp, bottom = 12.dp),
-                Arrangement.SpaceBetween
+                modifier = Modifier.padding(start = 12.dp, bottom = 12.dp), Arrangement.SpaceBetween
             ) {
                 NameCard(name = hostel.name)
                 Spacer(modifier = Modifier.padding(bottom = 6.dp))
@@ -367,12 +282,12 @@ fun PopularCard(hostel: Hostel, navigateToDetails: (Int) -> Unit) {
 
 @Composable
 fun NameCard(name: String) {
-    val ellipsisName =
-        if (name.length > 13) name.slice(0..13) + "..."
-        else name
+    val ellipsisName = if (name.length > 13) name.slice(0..13) + "..."
+    else name
 
     Text(
-        text = ellipsisName, textAlign = TextAlign.Center,
+        text = ellipsisName,
+        textAlign = TextAlign.Center,
         fontSize = 12.sp,
         maxLines = 1,
         fontWeight = FontWeight.Medium,
@@ -478,41 +393,39 @@ fun RadioCategory(text: String, selectedButton: MutableState<String>) {
     ) {
         Box(Modifier.fillMaxSize()) {
             if (isSelected) {
-                Text(text = text)
+                Chip(text = text, color = travel, fontWeight = FontWeight.Bold)
             } else {
-                Text(text = text, color = lightGray)
+                Chip(text = text, color = lightGray, fontWeight = FontWeight.Normal)
             }
         }
     }
 }
 
 @Composable
-fun CurrentPlace() {
+fun Chip(text: String, color: Color, fontWeight: FontWeight) {
+    Text(
+        text = text,
+        color = color,
+        fontFamily = circularFamily,
+        fontWeight = fontWeight,
+        fontSize = 14.sp
+    )
+}
+
+@Composable
+fun CurrentPlace(cities: List<String>) {
     Row(
         Modifier
             .padding(
                 top = 44.dp, start = 20.dp, end = 24.dp
             )
-            .fillMaxWidth(),
-        Arrangement.SpaceBetween
+            .fillMaxWidth(), Arrangement.SpaceBetween
     ) {
         Column {
             TitleText(text = "Explore", fontSize = 14.sp, fontWeight = FontWeight.Normal)
             TitleText(text = "Aspen", fontSize = 32.sp, fontWeight = FontWeight.Medium)
         }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                modifier = Modifier.padding(end = 8.dp),
-                painter = painterResource(id = R.drawable.ic_location),
-                contentDescription = "Place icon"
-            )
-            PlaceText(text = "Aspen, USA", fontSize = 12.sp, fontWeight = FontWeight.Normal)
-            Image(
-                modifier = Modifier.padding(start = 8.dp),
-                painter = painterResource(id = R.drawable.ic_arrow_down),
-                contentDescription = "Place icon"
-            )
-        }
+        Location(cities)
     }
 }
 
@@ -584,10 +497,9 @@ fun HintText(text: String) {
 fun PreviewMainScreen() {
     Aspen_ComposeTheme {
         Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
         ) {
-            MainBody(hostels = Mockup.hostels())
+            MainBody(hostels = Mockup.hostels(), cities = Mockup.cities())
         }
 
     }

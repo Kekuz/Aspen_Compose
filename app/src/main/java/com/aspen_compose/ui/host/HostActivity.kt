@@ -1,4 +1,4 @@
-package com.aspen_compose
+package com.aspen_compose.ui.host
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,11 +9,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.aspen_compose.ui.navigation.SetupNavGraph
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class HostActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
 

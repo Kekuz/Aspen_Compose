@@ -1,17 +1,15 @@
 package com.aspen_compose.ui.main_screen
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aspen_compose.mockup.Mockup
 import com.aspen_compose.model.Hostel
+import com.aspen_compose.model.Tour
 import com.aspen_compose.network.repository.CitiesRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,12 +18,11 @@ class MainViewModel @Inject constructor(
     private val citiesRepositoryImpl: CitiesRepositoryImpl,
 ) : ViewModel() {
 
-    //UI state
-    //private val _uiState = MutableStateFlow(MainUiState.)
-    //val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
+    private val _hotels = MutableStateFlow(Mockup.hostels())
+    val hotels: StateFlow<List<Hostel>> = _hotels
 
-    private val _hotelsState = MutableStateFlow(Mockup.hostels())
-    val hotelsState: StateFlow<List<Hostel>> = _hotelsState
+    private val _recommended = MutableStateFlow(Mockup.tours())
+    val recommended: StateFlow<List<Tour>> = _recommended
 
     private val _cities = MutableStateFlow(emptyList<String>())
     val cities: StateFlow<List<String>> = _cities

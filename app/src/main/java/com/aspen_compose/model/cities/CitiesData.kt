@@ -1,4 +1,4 @@
-package com.aspen_compose.network.dto.citiesDto
+package com.aspen_compose.model.cities
 
 data class CitiesData(
     val iso3 : String,

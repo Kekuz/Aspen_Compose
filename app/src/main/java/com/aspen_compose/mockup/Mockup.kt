@@ -2,10 +2,11 @@ package com.aspen_compose.mockup
 
 import com.aspen_compose.R
 import com.aspen_compose.model.Hostel
+import com.aspen_compose.model.Tour
 
 object Mockup {
 
-    fun cities(): List<String>{
+    fun cities(): List<String> {
         return listOf(
             "Utah",
             "Washington",
@@ -19,6 +20,30 @@ object Mockup {
             "Florida"
         )
     }
+
+    fun tours(): List<Tour> {
+        return listOf(
+            Tour(
+                R.drawable.recommended_mockup2,
+                "Explore Aspen",
+                "4N/5D",
+                true,
+            ),
+            Tour(
+                R.drawable.recommended_mockup1,
+                "Luxurious Aspen",
+                "2N/3D",
+                false,
+            ),
+            Tour(
+                R.drawable.recommended_mockup2,
+                "Luxurious Aspen",
+                "2N/3D",
+                true,
+            )
+        )
+    }
+
     fun hostels(): List<Hostel> {
         return listOf(
             Hostel(

@@ -1,4 +1,4 @@
-package com.aspen_compose.ui.main_screen
+package com.aspen_compose.ui.main_screen.composables
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -7,13 +7,10 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -33,15 +30,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aspen_compose.R
 import com.aspen_compose.mockup.Mockup
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import com.aspen_compose.ui.theme.backgroundDarkBlue
-import com.aspen_compose.ui.theme.black
 import com.aspen_compose.ui.theme.circularFamily
 import com.aspen_compose.ui.theme.textGray
 
@@ -108,7 +106,7 @@ fun Location(cities: List<String>) {
 }
 
 @Composable
-fun CitiesList(
+private fun CitiesList(
     extraPadding: Dp,
     cities: List<String>,
     changeCity: (city: String) -> Unit,
@@ -135,7 +133,7 @@ fun CitiesList(
                         fontWeight = FontWeight.Normal,
                         fontSize = 15.sp,
                         modifier = Modifier
-                            .padding(bottom = 4.dp,)
+                            .padding(bottom = 4.dp)
                             .clip(RoundedCornerShape(8.dp))
                             .clickable {
                                 changeCity(it)
@@ -146,6 +144,17 @@ fun CitiesList(
             }
         }
     }
+}
+
+@Composable
+private fun PlaceText(text: String, fontSize: TextUnit, fontWeight: FontWeight? = null) {
+    Text(
+        text = text,
+        fontSize = fontSize,
+        fontWeight = fontWeight,
+        color = textGray,
+        fontFamily = circularFamily,
+    )
 }
 
 @Preview

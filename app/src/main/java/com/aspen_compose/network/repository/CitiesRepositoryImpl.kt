@@ -4,11 +4,10 @@ import android.content.Context
 import android.util.Log
 import com.aspen_compose.R
 import com.aspen_compose.network.NetworkClient
-import com.aspen_compose.network.Resource
-import com.aspen_compose.network.dto.CitiesRequest
-import com.aspen_compose.network.dto.CitiesRequestBody
-import com.aspen_compose.network.dto.citiesDto.CitiesData
-import com.aspen_compose.network.dto.citiesDto.CitiesSearchResponse
+import com.aspen_compose.network.model.CitiesRequest
+import com.aspen_compose.network.model.CitiesRequestBody
+import com.aspen_compose.model.cities.CitiesData
+import com.aspen_compose.model.cities.CitiesSearchResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

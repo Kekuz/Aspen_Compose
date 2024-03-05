@@ -1,6 +1,5 @@
 package com.aspen_compose.ui.welcome_screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,31 +14,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.aspen_compose.R
-import com.aspen_compose.Screen
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import com.aspen_compose.ui.theme.circularFamily
-import com.aspen_compose.ui.theme.hiatusFamily
 import com.aspen_compose.ui.theme.montserratFamily
 import com.aspen_compose.ui.theme.travel
+import com.aspen_compose.ui.welcome_screen.composables.Title
+import com.aspen_compose.ui.welcome_screen.composables.WelcomeBackground
 
 
 @Composable
 fun WelcomeScreen(
     navigateToMain: () -> Unit = {},
 ) {
-    Background(Modifier)
+    WelcomeBackground()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
@@ -64,28 +59,6 @@ fun WelcomeScreen(
         ExploreButton(navigateToMain)
     }
 }
-
-@Composable
-fun Background(modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(id = R.drawable.background_picture),
-        contentDescription = "background",
-        modifier = modifier,
-        contentScale = ContentScale.Crop
-    )
-}
-
-@Composable
-fun Title() {
-    Text(
-        text = stringResource(id = R.string.aspen),
-        modifier = Modifier.padding(top = 93.dp),
-        fontSize = 116.sp,
-        color = colorResource(id = R.color.white),
-        fontFamily = hiatusFamily,
-    )
-}
-
 
 @Composable
 fun BottomText(text: String, fontSize: TextUnit, fontWeight: FontWeight? = null) {

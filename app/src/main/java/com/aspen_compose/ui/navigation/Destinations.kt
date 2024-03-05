@@ -1,4 +1,4 @@
-package com.aspen_compose
+package com.aspen_compose.ui.navigation
 
 sealed class Destinations(val route: String) {
     data class Details(private val args: Int) :

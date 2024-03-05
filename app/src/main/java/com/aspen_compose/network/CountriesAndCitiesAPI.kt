@@ -1,7 +1,7 @@
 package com.aspen_compose.network
 
-import com.aspen_compose.network.dto.CitiesRequestBody
-import com.aspen_compose.network.dto.citiesDto.CitiesSearchResponse
+import com.aspen_compose.network.model.CitiesRequestBody
+import com.aspen_compose.model.cities.CitiesSearchResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 

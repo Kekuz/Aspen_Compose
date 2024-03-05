@@ -1,4 +1,4 @@
-package com.aspen_compose
+package com.aspen_compose.ui.navigation
 
 sealed class Screen(open val route: String) {
     object Welcome : Screen(route = "welcome_screen")

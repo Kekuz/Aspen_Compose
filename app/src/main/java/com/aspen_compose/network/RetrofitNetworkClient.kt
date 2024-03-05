@@ -3,8 +3,8 @@ package com.aspen_compose.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.aspen_compose.network.dto.CitiesRequest
-import com.aspen_compose.network.dto.Response
+import com.aspen_compose.network.model.CitiesRequest
+import com.aspen_compose.network.model.Response
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception

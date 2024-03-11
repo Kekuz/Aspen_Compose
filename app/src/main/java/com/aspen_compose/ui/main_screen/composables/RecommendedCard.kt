@@ -44,7 +44,7 @@ fun RecommendedCard(tour: Tour) {
     ConstraintLayout(
         modifier = Modifier
             .width(174.dp)
-            .height(162.dp)
+            .height(166.dp)
             .border(1.dp, borderGray, RoundedCornerShape(16.dp))
             .shadow(
                 elevation = 5.dp, shape = RoundedCornerShape(16.dp)
@@ -90,7 +90,7 @@ fun RecommendedCard(tour: Tour) {
             fontFamily = circularFamily,
             modifier = Modifier.constrainAs(name) {
                 top.linkTo(interval.bottom)
-                start.linkTo(parent.start, margin = 4.dp)
+                start.linkTo(parent.start, margin = 8.dp)
             })
 
 
@@ -98,7 +98,7 @@ fun RecommendedCard(tour: Tour) {
             contentDescription = "Hot deal",
             tint = hotDealIconColor,
             modifier = Modifier.constrainAs(icon) {
-                start.linkTo(parent.start, margin = 6.dp)
+                start.linkTo(parent.start, margin = 8.dp)
                 top.linkTo(iconText.top)
                 bottom.linkTo(iconText.bottom)
             })
@@ -112,9 +112,8 @@ fun RecommendedCard(tour: Tour) {
             modifier = Modifier.constrainAs(iconText) {
                 top.linkTo(name.bottom)
                 start.linkTo(icon.end, margin = 4.dp)
-            })
-
-
+            }
+        )
     }
 }
 

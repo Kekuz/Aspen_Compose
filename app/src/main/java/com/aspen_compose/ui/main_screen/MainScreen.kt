@@ -30,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.aspen_compose.R
 import com.aspen_compose.mockup.Mockup
 import com.aspen_compose.model.Hostel
@@ -40,6 +42,8 @@ import com.aspen_compose.ui.main_screen.composables.PopularCard
 import com.aspen_compose.ui.main_screen.composables.RecommendedCard
 import com.aspen_compose.ui.main_screen.composables.SearchField
 import com.aspen_compose.ui.main_screen.composables.Separator
+import com.aspen_compose.ui.main_screen.composables.TitleText
+import com.aspen_compose.ui.navigation.Destinations
 import com.aspen_compose.ui.theme.Aspen_ComposeTheme
 import com.aspen_compose.ui.theme.backgroundBlue
 import com.aspen_compose.ui.theme.black
@@ -50,12 +54,19 @@ import com.aspen_compose.ui.theme.montserratFamily
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel,
-    navigateToDetails: (Int) -> Unit,
+    viewModel: MainViewModel = hiltViewModel<MainViewModel>(),
+    navController: NavController,
 ) {
     val cities by viewModel.cities.collectAsState()
     val hostels by viewModel.hotels.collectAsState()
     val recommended by viewModel.recommended.collectAsState()
+
+    val navigateToDetails: (Int) -> Unit = { id ->
+        navController.navigate(
+            route = Destinations.Details(id).route
+        )
+
+    }
 
     MainBody(
         cities,
@@ -134,30 +145,12 @@ fun CurrentPlace(cities: List<String>) {
     }
 }
 
-@Composable
-fun TitleText(text: String, fontSize: TextUnit, fontWeight: FontWeight? = null) {
-    Text(
-        text = text,
-        fontSize = fontSize,
-        fontWeight = fontWeight,
-        color = black,
-        fontFamily = montserratFamily,
-    )
-}
-
-@Preview(device = "spec:width=411dp,height=891dp")
+@Preview(showBackground = true)
 @Composable
 fun PreviewMainScreen() {
-    Aspen_ComposeTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
-        ) {
-            MainBody(
-                cities = Mockup.cities(),
-                hostels = Mockup.hostels(),
-                recommended = Mockup.tours()
-            )
-        }
-
-    }
+    MainBody(
+        cities = Mockup.cities(),
+        hostels = Mockup.hostels(),
+        recommended = Mockup.tours()
+    )
 }

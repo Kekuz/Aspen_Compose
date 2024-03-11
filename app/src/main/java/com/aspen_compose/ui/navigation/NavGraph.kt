@@ -24,23 +24,14 @@ fun SetupNavGraph(
         composable(
             route = Screen.Welcome.route
         ) {
-            WelcomeScreen(navigateToMain = {
-                navController.navigate(route = Screen.Main.route) {
-                    popUpTo(Screen.Welcome.route) {
-                        inclusive = true
-                    }
-                }
-            })
+
+            WelcomeScreen(navController = navController)
         }
         composable(
             route = Screen.Main.route
         ) {
-            val viewModel = hiltViewModel<MainViewModel>()
-            MainScreen(viewModel = viewModel, navigateToDetails = { id ->
-                navController.navigate(
-                    route = Destinations.Details(id).route
-                )
-            })
+
+            MainScreen(navController = navController)
         }
         composable(
             route = Screen.Details("hostel").route,
@@ -51,11 +42,7 @@ fun SetupNavGraph(
             )
         ) {
 
-            val viewModel = hiltViewModel<DetailsViewModel>()
-
-            DetailsScreen(viewModel = viewModel, navigateBack = {
-                navController.popBackStack()
-            })
+            DetailsScreen(navController = navController)
         }
     }
 }

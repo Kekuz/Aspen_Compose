@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.aspen_compose.R
 import com.aspen_compose.mockup.Mockup
 import com.aspen_compose.model.Hostel
@@ -55,10 +57,14 @@ import com.aspen_compose.ui.theme.white
 
 @Composable
 fun DetailsScreen(
-    viewModel: DetailsViewModel,
-    navigateBack: () -> Unit,
+    viewModel: DetailsViewModel = hiltViewModel<DetailsViewModel>(),
+    navController: NavController,
 ) {
     val hostel by viewModel.hotelState.collectAsState()
+
+    val navigateBack: () -> Unit = {
+        navController.popBackStack()
+    }
 
     DetailsBody(hostel = hostel, navigateBack = navigateBack)
 
@@ -66,7 +72,7 @@ fun DetailsScreen(
 
 @Composable
 fun DetailsBody(hostel: Hostel, navigateBack: () -> Unit = {}) {
-    ConstraintLayout {
+    ConstraintLayout(Modifier.fillMaxSize()) {
 
         val startGuideline = createGuidelineFromStart(20.dp)
         val endGuideline = createGuidelineFromEnd(20.dp)
@@ -334,16 +340,10 @@ fun FacilitiesItem(icon: Painter, text: String) {
 }
 
 
-@Preview(device = "spec:width=411dp,height=891dp")
+@Preview(
+    showBackground = true
+)
 @Composable
 fun PreviewDetailsScreen() {
-    Aspen_ComposeTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            DetailsBody(hostel = Mockup.getHostelById(0))
-        }
-
-    }
+    DetailsBody(hostel = Mockup.getHostelById(0))
 }

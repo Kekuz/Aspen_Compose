@@ -1,6 +1,7 @@
 package com.aspen_compose.ui.welcome_screen.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -12,6 +13,7 @@ fun WelcomeBackground() {
     Image(
         painter = painterResource(id = R.drawable.background_picture),
         contentDescription = "background",
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxSize()
     )
 }

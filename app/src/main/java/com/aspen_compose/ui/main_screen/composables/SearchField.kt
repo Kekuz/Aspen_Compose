@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aspen_compose.R
@@ -23,6 +24,7 @@ import com.aspen_compose.ui.theme.black
 import com.aspen_compose.ui.theme.circularFamily
 import com.aspen_compose.ui.theme.lightGray
 
+@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchField() {
@@ -34,7 +36,9 @@ fun SearchField() {
             .padding(top = 16.dp, start = 20.dp, end = 20.dp),
         value = textField.value,
         onValueChange = { value -> textField.value = value },
-        label = { HintText() },
+        label = {
+            HintText(text = "Icon search")
+        },
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
@@ -54,9 +58,9 @@ fun SearchField() {
 }
 
 @Composable
-private fun HintText() {
+private fun HintText(text: String) {
     Text(
-        text = "Icon search",
+        text = text,
         fontSize = 13.sp,
         fontWeight = FontWeight.Medium,
         color = lightGray,
